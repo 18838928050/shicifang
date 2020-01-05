@@ -57,4 +57,5 @@ public class LabelController {
       Page<Label> pageData = labelService.pageQuery(label,page,size);
       return new Result(true,StatusCode.OK,"查询成功",new PageResult<Label>(pageData.getTotalElements(),pageData.getContent()));
    }
+
 }

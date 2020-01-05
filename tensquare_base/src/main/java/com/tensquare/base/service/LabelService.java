@@ -60,11 +60,11 @@ public class LabelService {
             public Predicate toPredicate(Root<Label> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 List<Predicate> list=new ArrayList<>();
 
-                if (label.getLabelname()!=null&&"".equals(label.getLabelname())){
+                if (label.getLabelname()!=null&& !"".equals(label.getLabelname())){
                     Predicate predicate=cb.like(root.get("labelname").as(String.class),"%"+label.getLabelname()); //where labelName like "% '%小明"%"
                     list.add(predicate);
                 }
-                if (label.getState()!=null && "".equals(label.getState())){
+                if (label.getState()!= null &&  !"".equals(label.getState())){
                     Predicate predicate=cb.like(root.get("state").as(String.class),label.getState()); //where state="1"
                     list.add(predicate);
                 }
@@ -79,6 +79,7 @@ public class LabelService {
     }
 
     public Page<Label> pageQuery(Label label, int page, int size) {
+        System.out.println(label.getLabelname());
         //封装分页对象
         Pageable pageable= PageRequest.of(page-1,size);
         return labelDao.findAll(new Specification<Label>() {
@@ -93,18 +94,19 @@ public class LabelService {
             public Predicate toPredicate(Root<Label> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 
                 List<Predicate> list=new ArrayList<>();
-                if (label.getLabelname()!=null&&"".equals(label.getLabelname())){
+                if (label.getLabelname() != null && !"".equals(label.getLabelname())){
                     Predicate predicate=cb.like(root.get("labelname").as(String.class),"%"+label.getLabelname()); //where labelName like "% '%小明"%"
                     list.add(predicate);
                 }
-                if (label.getState()!=null && "".equals(label.getState())){
+                if (label.getState() != null && !"".equals(label.getState())){
                     Predicate predicate=cb.like(root.get("state").as(String.class),label.getState()); //where state="1"
                     list.add(predicate);
                 }
+                System.out.println(list.size());
                 //new一个list集合，来存放所有的条件
                 Predicate[] parr=new Predicate[list.size()];
                 //把list直接转成数组
-                parr=list.toArray(parr);
+                list.toArray(parr);
                 return cb.and(parr);//where labelName like "% '%小明"%" and state="1"
             }
 
