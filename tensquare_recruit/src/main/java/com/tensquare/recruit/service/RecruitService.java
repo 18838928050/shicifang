@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.jca.cci.core.RecordCreator;
 import org.springframework.stereotype.Service;
 
 import util.IdWorker;
@@ -39,6 +40,12 @@ public class RecruitService {
 	@Autowired
 	private IdWorker idWorker;
 
+	public List<Recruit> recommend(){
+		return recruitDao.findTop6ByStateNotOrderByCreatetimeDesc("2");
+	}
+	public List<Recruit> newlist(){
+		return recruitDao.findTop6ByStateOrderByCreatetime("0");
+	}
 	/**
 	 * 查询全部列表
 	 * @return

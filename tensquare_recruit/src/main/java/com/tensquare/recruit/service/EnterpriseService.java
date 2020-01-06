@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Entity;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
@@ -39,6 +40,9 @@ public class EnterpriseService {
 	@Autowired
 	private IdWorker idWorker;
 
+	public List<Enterprise> hostList(String ishot){
+		return enterpriseDao.findByIshot(ishot);
+	}
 	/**
 	 * 查询全部列表
 	 * @return
