@@ -12,16 +12,16 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
+import com.tensquare.qa.dao.ProblemDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.domain.Pageable;
 import util.IdWorker;
 
-import com.tensquare.qa.dao.ProblemDao;
 import com.tensquare.qa.pojo.Problem;
 
 /**
@@ -39,6 +39,23 @@ public class ProblemService {
 	@Autowired
 	private IdWorker idWorker;
 
+
+	public Page<Problem> newlist(String labelid, int page, int rows){
+		Pageable pageable= PageRequest.of(page-1,rows);
+		return problemDao.newlist(labelid,pageable);
+	}
+
+
+	public Page<Problem> hotlist(String labelid, int page, int rows){
+		Pageable pageable= PageRequest.of(page-1,rows);
+		return problemDao.hotlist(labelid,pageable);
+	}
+
+
+	public Page<Problem> waitlist(String labelid, int page, int rows){
+		Pageable pageable= PageRequest.of(page-1,rows);
+		return problemDao.waitlist(labelid,pageable);
+	}
 	/**
 	 * 查询全部列表
 	 * @return
