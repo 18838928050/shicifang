@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -97,8 +98,8 @@ public class ArticleService {
 	//如果没有取到
 		if (article==null){
 			article= articleDao.findById(id).get();
-			//存入到缓存中
-			redisTemplate.opsForValue().set("article_"+id,article);
+			//存入到缓存中,并设置过期时间
+			redisTemplate.opsForValue().set("article_"+id,article,10, TimeUnit.SECONDS);
 		}
 		return article;
 	}
