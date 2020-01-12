@@ -7,6 +7,7 @@ import entity.Result;
 import entity.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import sun.security.provider.ConfigFile;
 
@@ -18,8 +19,11 @@ import java.util.List;
 public class SpitController {
 
     @Autowired
-    
     private SpitService spitService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
 
     @RequestMapping(method = RequestMethod.GET)
     public Result findAll(){
@@ -59,8 +63,20 @@ public class SpitController {
 
     @RequestMapping(value = "/thumbup/{spitId}",method = RequestMethod.PUT)
     public Result thumbup(@PathVariable String  spitId){
+        //判断当前用户是否已经点赞，但是我们现在没有做认证，暂时先把userid写死
+        String userid="111";
+        //判断当前用户是否已经点赞
+        if (redisTemplate.opsForValue().get("thumbup_"+userid)!=null){
+            return new Result(false,StatusCode.REPERROR,"不能重复点赞");
+        }else{
+            redisTemplate.opsForValue().set("thumbup_"+userid,1);
+        }
+
+
         spitService.thumbup(spitId);
      return new Result(true,StatusCode.OK,"点赞成功");
     }
+
+
 
 }
